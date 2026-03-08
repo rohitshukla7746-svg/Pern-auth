@@ -16,4 +16,8 @@ const pool = new Pool({
   },
 });
 
+pool.connect()
+  .then(() => console.log("✅ DB connected successfully"))
+  .catch((err) => console.error("❌ DB not connected", err));
+
 export default pool;
