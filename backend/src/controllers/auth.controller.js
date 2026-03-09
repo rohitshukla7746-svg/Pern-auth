@@ -19,9 +19,8 @@ const cookieOptions = {
   secure: true,
   sameSite: "none",
   path: "/",
-  domain: ".onrender.com",
   maxAge: 30 * 24 * 60 * 60 * 1000
-};;
+};
 
 
 const generateToken = (id) => {

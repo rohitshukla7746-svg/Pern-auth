@@ -42,6 +42,27 @@
 // export default pool;
 
 
+// import pkg from "pg";
+// import dotenv from "dotenv";
+// const { Pool } = pkg;
+
+// dotenv.config();
+
+// const pool = new Pool({
+//   // Host corrected to aws-1 as per your Supabase screenshot
+//   user: 'postgres.zeytmkdagscytedatotk',
+//   host: 'aws-1-ap-south-1.pooler.supabase.com',
+//   database: 'postgres',
+//   password: 'jjhh-kkhh-7746',
+//   port: 5432, 
+//   ssl: {
+//     rejectUnauthorized: false
+//   }
+// });
+
+// export default pool;
+
+
 import pkg from "pg";
 import dotenv from "dotenv";
 const { Pool } = pkg;
@@ -49,15 +70,8 @@ const { Pool } = pkg;
 dotenv.config();
 
 const pool = new Pool({
-  // Host corrected to aws-1 as per your Supabase screenshot
-  user: 'postgres.zeytmkdagscytedatotk',
-  host: 'aws-1-ap-south-1.pooler.supabase.com',
-  database: 'postgres',
-  password: 'jjhh-kkhh-7746',
-  port: 5432, 
-  ssl: {
-    rejectUnauthorized: false
-  }
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
 });
 
 export default pool;

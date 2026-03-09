@@ -15,7 +15,7 @@ router.get("/is-auth",middlewareAuth, isAuthenticated)
 router.post("/send-reset-otp", sendResetOtp)
 router.post("/reset-password", resetPassword)
 
-router.get('/me', (req, res) => {
+router.get('/me', middlewareAuth,(req, res) => {
   res.status(200).json({ success: true, users: req.user });
 })
 
