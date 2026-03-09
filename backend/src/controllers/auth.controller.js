@@ -6,12 +6,22 @@ import jwt from "jsonwebtoken";
 import pool from "../lib/db.js";
 import transporter from "../lib/nodemailer.js";
 
+// const cookieOptions = {
+//   httpOnly: true,
+//   secure: process.env.NODE_ENV === "production",
+//   sameSite: "none",
+//   maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+// };
+
+
 const cookieOptions = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
+  secure: true,
   sameSite: "none",
-  maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+  path: "/",
+  maxAge: 30 * 24 * 60 * 60 * 1000,
 };
+
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
