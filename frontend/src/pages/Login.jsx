@@ -6,32 +6,90 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
 
+axios.defaults.withCredentials = true;
+
+// const Login = () => {
+
+//   const navigate = useNavigate();
+
+//   const {backendUrl, setIsLoggedin, getUserData} = useContext(AppContent)
+  
+//   const [state, setState] = useState('signup')
+//   const [name, setName] = useState('')
+//   const [email, setEmail] = useState('')
+//    const [password, setPassword] = useState('')
+
+//    const onSubmitHandle = async (e) => {
+//     e.preventDefault();
+  
+//     try {
+//       axios.defaults.withCredentials = true;
+  
+//       if (state === 'signup') {
+//         const res = await axios.post(
+//           backendUrl + '/api/auth/signup',
+//           { name, email, password }
+//         );
+  
+//         const data = res.data;
+  
+//         if (data.success) {
+//           setIsLoggedin(true);
+//           getUserData();
+//           navigate('/');
+//         } else {
+//           toast.error(data.message);
+//         }
+  
+//       } else {
+//         const res = await axios.post(
+//           backendUrl + '/api/auth/login',
+//           { email, password },
+//           { withCredentials: true }
+//         );
+  
+//         const data = res.data;
+  
+//         if (data.success) {
+//           setIsLoggedin(true);
+//            getUserData();
+//           navigate('/');
+//         } else {
+//           toast.error(data.message);
+//         }
+//       }
+  
+//     } catch (error) {
+//       toast.error(error.response?.data?.message || "Something went wrong");
+//     }
+//   };
+  
 
 const Login = () => {
 
   const navigate = useNavigate();
 
-  const {backendUrl, setIsLoggedin, getUserData} = useContext(AppContent)
-  
+  const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContent)
+
   const [state, setState] = useState('signup')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-   const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('')
 
-   const onSubmitHandle = async (e) => {
+  const onSubmitHandle = async (e) => {
     e.preventDefault();
-  
+
     try {
-      axios.defaults.withCredentials = true;
-  
+
       if (state === 'signup') {
+
         const res = await axios.post(
           backendUrl + '/api/auth/signup',
           { name, email, password }
         );
-  
+
         const data = res.data;
-  
+
         if (data.success) {
           setIsLoggedin(true);
           getUserData();
@@ -39,30 +97,30 @@ const Login = () => {
         } else {
           toast.error(data.message);
         }
-  
+
       } else {
+
         const res = await axios.post(
           backendUrl + '/api/auth/login',
-          { email, password },
-          { withCredentials: true }
+          { email, password }
         );
-  
+
         const data = res.data;
-  
+
         if (data.success) {
           setIsLoggedin(true);
-           getUserData();
+          getUserData();
           navigate('/');
         } else {
           toast.error(data.message);
         }
       }
-  
+
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
-  
+
 
   return (
     <div  className='flex items-center justify-end min-h-screen px-6 md:pr-20 bg-gradient-to-br from-slate-900 to-purple-400'>
