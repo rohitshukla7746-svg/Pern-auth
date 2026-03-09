@@ -16,7 +16,8 @@ const e = express()
 
 e.use(
   cors({
-    origin: process.env.CLIENT_URL, // frontend URL
+    // origin: process.env.CLIENT_URL, // 
+      origin: "https://pern-auth-frontend.onrender.com", 
     credentials: true,
   })
 );
