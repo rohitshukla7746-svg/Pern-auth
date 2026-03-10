@@ -12,42 +12,80 @@ const NavBar = () => {
    const navigate = useNavigate();
    const {userData, backendUrl, setUserData, setIsLoggedin} = useContext(AppContent)
  
-   const sendVerificationOtp = async () => {
-    try {
-      const response = await axios.post(
-        `${backendUrl}/api/auth/send-verify-otp`,
-        {},
-        { withCredentials: true }
-      );
+  //  const sendVerificationOtp = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${backendUrl}/api/auth/send-verify-otp`,
+  //       {},
+  //       { withCredentials: true }
+  //     );
   
-      if (response.data.success) {
-        navigate('/email-verify');
-        toast.success(response.data.message);
-      } else {
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
-    }
-  };
+  //     if (response.data.success) {
+  //       navigate('/email-verify');
+  //       toast.success(response.data.message);
+  //     } else {
+  //       toast.error(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.message || error.message);
+  //   }
+  // };
   
 
-   const logout = async () => {
-    try {
-      axios.defaults.withCredentials = true;
-  
-      const response = await axios.post(`${backendUrl}/api/auth/logout`);
-  
-      if (response.data.success) {
-        setIsLoggedin(false);
-        setUserData(null);
-        navigate('/');
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+  const sendVerificationOtp = async () => {
+  try {
+    const response = await axios.post(
+      `${backendUrl}/api/auth/send-verify-otp`,
+      {}
+    );
+
+    if (response.data.success) {
+      navigate('/email-verify');
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
     }
-  };
+  } catch (error) {
+    toast.error(error.response?.data?.message || error.message);
+  }
+};
+
+
+
+
+  //  const logout = async () => {
+  //   try {
+  //     axios.defaults.withCredentials = true;
   
+  //     const response = await axios.post(`${backendUrl}/api/auth/logout`);
+  
+  //     if (response.data.success) {
+  //       setIsLoggedin(false);
+  //       setUserData(null);
+  //       navigate('/');
+  //     }
+  //   } catch (error) {
+  //     toast.error(error.response?.data?.message || error.message);
+  //   }
+  // };
+  
+
+ const logout = async () => {
+  try {
+    await axios.post(`${backendUrl}/api/auth/logout`);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    // always clear regardless of backend response
+    localStorage.removeItem('token');
+    delete axios.defaults.headers.common['Authorization'];
+    setIsLoggedin(false);
+    setUserData(null);
+    navigate('/login');
+  }
+};
+
+
   return (
     <div className='w-full flex justify-between items-center bg-slate-500 p-12 sm:p-6 sm:px-20 absolute top-[-30px]'>
      <h1 className='text-white text-6xl font-bold'>Wconnect</h1>
