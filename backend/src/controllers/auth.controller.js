@@ -14,10 +14,20 @@ import transporter from "../lib/nodemailer.js";
 // };
 
 
+// const cookieOptions = {
+//   httpOnly: true,
+//   secure: true,
+//   sameSite: "none",
+//   path: "/",
+//   maxAge: 30 * 24 * 60 * 60 * 1000
+// };
+
+
+
 const cookieOptions = {
   httpOnly: true,
-  secure: true,
-  sameSite: "none",
+  secure: process.env.NODE_ENV === "production", // false on localhost, true on Render
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // lax on localhost
   path: "/",
   maxAge: 30 * 24 * 60 * 60 * 1000
 };
