@@ -15,6 +15,26 @@ export const AppContextProvider = (props) => {
   const [userData, setUserData] = useState(null);
 
   // ✅ Check auth state
+  // const getAuthState = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       backendUrl + "/api/auth/is-auth",
+  //       { withCredentials: true }
+  //     );
+
+  //     const data = res.data;
+
+  //     if (data.success) {
+  //       setIsLoggedin(true);
+  //       getUserData();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+
+
   const getAuthState = async () => {
     try {
       const res = await axios.get(
@@ -29,7 +49,9 @@ export const AppContextProvider = (props) => {
         getUserData();
       }
     } catch (error) {
-      console.log(error);
+      if (error.response?.status !== 401) {
+        console.log(error); // only log unexpected errors
+      }
     }
   };
 
