@@ -6,12 +6,10 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { motion } from "framer-motion";
 
-axios.defaults.withCredentials = true;
-
 const Login = () => {
 
   const navigate = useNavigate();
-  const { backendUrl, setIsLoggedin, getUserData } = useContext(AppContent)
+  const { backendUrl, setIsLoggedin, getUserData, setAuthToken } = useContext(AppContent)
 
   const [state, setState] = useState('signup')
   const [name, setName] = useState('')
@@ -27,6 +25,8 @@ const Login = () => {
         const data = res.data;
 
         if (data.success) {
+          localStorage.setItem('token', data.token);  // ← save token
+          setAuthToken(data.token);                    // ← set in axios headers
           setIsLoggedin(true);
           getUserData();
           navigate('/');
@@ -39,6 +39,8 @@ const Login = () => {
         const data = res.data;
 
         if (data.success) {
+          localStorage.setItem('token', data.token);  // ← save token
+          setAuthToken(data.token);                    // ← set in axios headers
           setIsLoggedin(true);
           getUserData();
           navigate('/');
@@ -77,7 +79,6 @@ const Login = () => {
           <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 8, repeat: Infinity, repeatType: "loop" }}>.</motion.span>
         </motion.h1>
 
-        {/* ✅ Fixed typos: "Yout" -> "Your", "Sigin" -> "Sign in" */}
         <motion.h1
           initial={{ y: 200, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -87,7 +88,6 @@ const Login = () => {
         </motion.h1>
       </div>
 
-      {/* ✅ Fixed typo: "font-semibld" -> "font-semibold" */}
       <motion.div
         initial={{ x: 50, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

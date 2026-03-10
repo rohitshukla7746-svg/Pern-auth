@@ -60,7 +60,15 @@ import jwt from "jsonwebtoken";
 
 export const middlewareAuth = async (req, res, next) => {
   try {
-    const token = req.cookies?.token;
+    // Read from Authorization header first, then fallback to cookie
+    let token = null;
+
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    } else {
+      token = req.cookies?.token;
+    }
 
     if (!token) {
       return res.status(401).json({
@@ -78,7 +86,6 @@ export const middlewareAuth = async (req, res, next) => {
       });
     }
 
-    // Attach verified user data
     req.user = { id: decoded.id };
 
     next();

@@ -133,15 +133,17 @@ export async function signup(req, res) {
       console.error("Welcome email failed:", emailError.message);
     }
 
-    return res.status(201).json({ success: true, user: newUser.rows[0] });
+    return res.status(201).json({ 
+      success: true, 
+      user: newUser.rows[0],
+      token: token  // ← added
+    });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 }
-
-
 
 
 // ================= LOGIN =================
@@ -179,6 +181,7 @@ export async function login(req, res) {
     res.json({
       success: true,
       message: "Login successful",
+      token: token,  // ← added
       user: {
         id: userData.id,
         name: userData.name,
@@ -191,8 +194,6 @@ export async function login(req, res) {
     res.status(500).json({ message: "Server error" });
   }
 }
-
-
 
 // ================= ME =================
 // export async function onboarding(req, res) {
