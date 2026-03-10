@@ -40,6 +40,58 @@ const generateToken = (id) => {
 };
 
 // ================= SIGNUP =================
+// export async function signup(req, res) {
+//   try {
+//     const { name, email, password } = req.body;
+
+//     if (!name || !email || !password) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+
+//     const userExists = await pool.query(
+//       "SELECT * FROM users WHERE email = $1",
+//       [email]
+//     );
+
+//     if (userExists.rows.length > 0) {
+//       return res.status(400).json({ message: "User already exists" });
+//     }
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+
+//     const newUser = await pool.query(
+//       "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email",
+//       [name, email, hashedPassword]
+//     );
+
+//     const token = generateToken(newUser.rows[0].id);
+
+//     res.cookie("token", token, cookieOptions);
+    
+//      //sending welcome email
+
+//     const mailOption = {
+//       from: process.env.SENDER_EMAIL,
+//       to: email,
+//       subject: "Welcome to Wconnect",
+//       text: `Welcome to Wconnect website. Your account has been created with email id: ${email} `
+//     }
+
+    
+
+//     await transporter.sendMail(mailOption);
+
+//     return res.status(201).json({ success: true, user: newUser.rows[0], });
+
+    
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// }
+
+
 export async function signup(req, res) {
   try {
     const { name, email, password } = req.body;
@@ -67,29 +119,30 @@ export async function signup(req, res) {
     const token = generateToken(newUser.rows[0].id);
 
     res.cookie("token", token, cookieOptions);
-    
-     //sending welcome email
 
-    const mailOption = {
-      from: process.env.SENDER_EMAIL,
-      to: email,
-      subject: "Welcome to Wconnect",
-      text: `Welcome to Wconnect website. Your account has been created with email id: ${email} `
+    // sending welcome email (don't block signup if email fails)
+    try {
+      const mailOption = {
+        from: process.env.SENDER_EMAIL,
+        to: email,
+        subject: "Welcome to Wconnect",
+        text: `Welcome to Wconnect website. Your account has been created with email id: ${email}`
+      };
+      await transporter.sendMail(mailOption);
+    } catch (emailError) {
+      console.error("Welcome email failed:", emailError.message);
     }
 
-    
-
-    await transporter.sendMail(mailOption);
-
-    return res.status(201).json({ success: true, user: newUser.rows[0], });
-
-    
+    return res.status(201).json({ success: true, user: newUser.rows[0] });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 }
+
+
+
 
 // ================= LOGIN =================
 export async function login(req, res) {
