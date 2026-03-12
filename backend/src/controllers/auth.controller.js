@@ -73,7 +73,7 @@ export async function signup(req, res) {
         <p style="font-size: 16px; color: #4F46E5;"><strong>${email}</strong></p>
         <p style="font-size: 16px; color: #333;">We're excited to have you on board!</p>
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.FRONTEND_URL}" 
+          <a href="${process.env.CLIENT_URL}" 
              style="background-color: #4F46E5; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-size: 16px;">
             Get Started
           </a>
