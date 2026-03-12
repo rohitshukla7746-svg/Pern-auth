@@ -50,12 +50,39 @@ export async function signup(req, res) {
 
     // sending welcome email (don't block signup if email fails)
     try {
+      // await sgMail.send({
+      //   from: process.env.SENDER_EMAIL,
+      //   to: email,
+      //   subject: "Welcome to Wconnect",
+      //   text: `Welcome to Wconnect website. Your account has been created with email id: ${email}`,
+      // });
+
       await sgMail.send({
-        from: process.env.SENDER_EMAIL,
-        to: email,
-        subject: "Welcome to Wconnect",
-        text: `Welcome to Wconnect website. Your account has been created with email id: ${email}`,
-      });
+  from: process.env.SENDER_EMAIL,
+  to: email,
+  subject: "Welcome to Wconnect 🎉",
+  text: `Welcome to Wconnect! Your account has been created with email: ${email}`,
+  html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+      <div style="background-color: #4F46E5; padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
+        <h1 style="color: white; margin: 0;">Welcome to Wconnect! 🎉</h1>
+      </div>
+      <div style="background-color: white; padding: 30px; border-radius: 0 0 10px 10px;">
+        <p style="font-size: 16px; color: #333;">Hi <strong>${name}</strong>,</p>
+        <p style="font-size: 16px; color: #333;">Your account has been successfully created with:</p>
+        <p style="font-size: 16px; color: #4F46E5;"><strong>${email}</strong></p>
+        <p style="font-size: 16px; color: #333;">We're excited to have you on board!</p>
+        <div style="text-align: center; margin: 30px 0;">
+          <a href="${process.env.FRONTEND_URL}" 
+             style="background-color: #4F46E5; color: white; padding: 12px 30px; border-radius: 5px; text-decoration: none; font-size: 16px;">
+            Get Started
+          </a>
+        </div>
+        <p style="font-size: 14px; color: #999; text-align: center;">If you didn't create this account, please ignore this email.</p>
+      </div>
+    </div>
+  `,
+});
     } catch (emailError) {
       console.error("Welcome email failed:", emailError.message);
     }
@@ -158,12 +185,42 @@ export async function sendVerifyOtp(req, res) {
       [otp, expiry, userId]
     );
 
+    // await sgMail.send({
+    //   from: process.env.SENDER_EMAIL,
+    //   to: user.email,
+    //   subject: "Verify Your Account - OTP",
+    //   text: `Your verification OTP is ${otp}. It expires in 10 minutes.`,
+    // });
+
     await sgMail.send({
-      from: process.env.SENDER_EMAIL,
-      to: user.email,
-      subject: "Verify Your Account - OTP",
-      text: `Your verification OTP is ${otp}. It expires in 10 minutes.`,
-    });
+  from: process.env.SENDER_EMAIL,
+  to: user.email,
+  subject: "Verify Your Account - OTP",
+  text: `Your verification OTP is ${otp}. It expires in 10 minutes.`,
+  html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+      <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); padding: 40px 30px; border-radius: 10px 10px 0 0; text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 10px;">🔐</div>
+        <h1 style="color: white; margin: 0; font-size: 26px;">Verify Your Account</h1>
+        <p style="color: rgba(255,255,255,0.8); margin-top: 8px; font-size: 15px;">Enter this OTP to confirm your email</p>
+      </div>
+      <div style="background-color: white; padding: 40px 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        <p style="font-size: 16px; color: #333;">Hi <strong>${user.name}</strong>,</p>
+        <p style="font-size: 15px; color: #555; line-height: 1.6;">Use the OTP below to verify your Wconnect account. This code expires in <strong>10 minutes</strong>.</p>
+        
+        <div style="background-color: #F5F3FF; border: 2px dashed #7C3AED; border-radius: 12px; padding: 30px; text-align: center; margin: 30px 0;">
+          <p style="margin: 0 0 8px; font-size: 13px; color: #7C3AED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Your OTP Code</p>
+          <p style="margin: 0; font-size: 42px; font-weight: 800; color: #4F46E5; letter-spacing: 10px;">${otp}</p>
+        </div>
+
+        <p style="font-size: 14px; color: #888; line-height: 1.6; text-align: center;">⏰ This OTP will expire in <strong>10 minutes</strong>. Do not share it with anyone.</p>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+        <p style="font-size: 13px; color: #aaa; text-align: center; margin: 0;">If you didn't request this, please ignore this email.</p>
+      </div>
+    </div>
+  `,
+});
 
     return res.status(200).json({ success: true, message: "Verification OTP sent successfully" });
 
@@ -253,12 +310,47 @@ export async function sendResetOtp(req, res) {
       [otp, expiry, email]
     );
 
+    // await sgMail.send({
+    //   from: process.env.SENDER_EMAIL,
+    //   to: user.email,
+    //   subject: "Reset your password",
+    //   text: `Your OTP to reset password is ${otp}. It expires in 10 minutes.`,
+    // });
+
+
     await sgMail.send({
-      from: process.env.SENDER_EMAIL,
-      to: user.email,
-      subject: "Reset your password",
-      text: `Your OTP to reset password is ${otp}. It expires in 10 minutes.`,
-    });
+  from: process.env.SENDER_EMAIL,
+  to: user.email,
+  subject: "Reset Your Password - Wconnect",
+  text: `Your OTP to reset password is ${otp}. It expires in 10 minutes.`,
+  html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+      <div style="background: linear-gradient(135deg, #DC2626 0%, #9F1239 100%); padding: 40px 30px; border-radius: 10px 10px 0 0; text-align: center;">
+        <div style="font-size: 48px; margin-bottom: 10px;">🔑</div>
+        <h1 style="color: white; margin: 0; font-size: 26px;">Reset Your Password</h1>
+        <p style="color: rgba(255,255,255,0.8); margin-top: 8px; font-size: 15px;">We received a request to reset your password</p>
+      </div>
+      <div style="background-color: white; padding: 40px 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        <p style="font-size: 16px; color: #333;">Hi <strong>${user.name}</strong>,</p>
+        <p style="font-size: 15px; color: #555; line-height: 1.6;">Use the OTP below to reset your Wconnect password. This code expires in <strong>10 minutes</strong>.</p>
+
+        <div style="background-color: #FFF1F2; border: 2px dashed #DC2626; border-radius: 12px; padding: 30px; text-align: center; margin: 30px 0;">
+          <p style="margin: 0 0 8px; font-size: 13px; color: #DC2626; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Your OTP Code</p>
+          <p style="margin: 0; font-size: 42px; font-weight: 800; color: #9F1239; letter-spacing: 10px;">${otp}</p>
+        </div>
+
+        <p style="font-size: 14px; color: #888; line-height: 1.6; text-align: center;">⏰ This OTP will expire in <strong>10 minutes</strong>. Do not share it with anyone.</p>
+
+        <div style="background-color: #FFF7ED; border-left: 4px solid #F97316; padding: 16px; border-radius: 4px; margin: 24px 0;">
+          <p style="margin: 0; font-size: 14px; color: #92400E;">⚠️ If you didn't request a password reset, please secure your account immediately.</p>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
+        <p style="font-size: 13px; color: #aaa; text-align: center; margin: 0;">If you didn't request this, please ignore this email.</p>
+      </div>
+    </div>
+  `,
+});
 
     return res.status(200).json({ success: true, message: "Reset OTP sent successfully" });
 
